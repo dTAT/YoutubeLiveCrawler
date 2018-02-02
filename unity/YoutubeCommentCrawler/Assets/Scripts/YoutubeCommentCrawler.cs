@@ -18,7 +18,7 @@ public class YoutubeCommentCrawler : MonoBehaviour {
     private string focusCannelId = "!PleaseSetYourChannel!";
     ///オーナー自身のメッセージを表示するか
     [SerializeField]
-    private bool doDisplayOwnerMessage = false;
+    private bool isDisplayOwnerMesssageMode = false;
     ///コメント取得間隔(秒)
     [SerializeField]
     float commentFetchInterval = 5.0f;
@@ -31,9 +31,11 @@ public class YoutubeCommentCrawler : MonoBehaviour {
     void Start () {
 
         var drawer = GetComponent<CommentDrawer> ();
+        if (null != drawer) {
+            drawer.IsDisplayOwnerMode = isDisplayOwnerMesssageMode;
+        }
         queue = GetComponent<CommentQueue> ();
         if (null != drawer && null != queue) {
-
             queue.SetDrawer (drawer);
         }
         StartCoroutine (ProcessSearchVideoId ());
@@ -83,7 +85,7 @@ public class YoutubeCommentCrawler : MonoBehaviour {
         while (doFetchComment) {
             yield return new WaitForSeconds (commentFetchInterval);
             var chatURI = uriGenerator.GetLiveChat (chatId, nextPageTokenstr);
-            Debug.Log (chatURI);
+            //  Debug.Log (chatURI);
             UnityWebRequest connectChatrequest = UnityWebRequest.Get (chatURI);
             yield return connectChatrequest.SendWebRequest ();
             var jsonText = connectChatrequest.downloadHandler.text;
