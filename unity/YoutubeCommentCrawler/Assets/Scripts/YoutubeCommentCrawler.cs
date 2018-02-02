@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.UI;
+using WebComment;
 using Youtube;
 public class YoutubeCommentCrawler : MonoBehaviour {
 

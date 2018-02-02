@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using WebComment;
 public class CommentDrawerCanvas : CommentDrawer {
 
 	[SerializeField]
@@ -11,7 +12,7 @@ public class CommentDrawerCanvas : CommentDrawer {
 	List<MessageItem> messageList = new List<MessageItem> ();
 	List<int> messageHashList = new List<int> ();
 	const int messageMax = 20;
-	public override void DrawComments (IList<Youtube.JSON.CommentInfo> comments, bool isDisplayOwnerMode) {
+	public override void DrawComments (IList<CommentChunk> comments, bool isDisplayOwnerMode) {
 		foreach (var c in comments) {
 			if (messageHashList.Contains (c.commentIdHash)) {
 				continue;
@@ -28,7 +29,7 @@ public class CommentDrawerCanvas : CommentDrawer {
 		}
 	}
 
-	void AddComment (Youtube.JSON.CommentInfo comment) {
+	void AddComment (CommentChunk comment) {
 		var x = Random.Range (-1200.0f, 500.0f);
 		var y = Random.Range (-630.0f, 270.0f);
 		var z = 900.0f;

@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using WebComment;
 using Youtube;
 public abstract class CommentDrawer : MonoBehaviour {
-	public abstract void DrawComments (IList<JSON.CommentInfo> comments, bool isDisplayOwnerMode);
+	public abstract void DrawComments (IList<CommentChunk> comments, bool isDisplayOwnerMode);
 
 	// float _x = UnityEngine.Random.Range (-400f, 400f);
 	// float _y = UnityEngine.Random.Range (-250f, 250f);

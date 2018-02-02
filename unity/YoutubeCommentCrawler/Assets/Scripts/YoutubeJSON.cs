@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using WebComment;
 
 namespace Youtube {
 	//コメント情報クラス
@@ -80,17 +81,6 @@ namespace Youtube {
 		public bool isChatOwner = false;
 	}
 	public class JSON {
-		public class CommentInfo {
-			public bool IsOwnerMessage;
-			public string DisplayName;
-			public string Message;
-			public CommentInfo (bool IsOwner, string name, string message) {
-				IsOwnerMessage = IsOwner;
-				DisplayName = name;
-				Message = message;
-			}
-			public int commentIdHash;
-		}
 		///JSONからChatIdをえる
 		///異常があった場合にはから文字列を返す
 		public static string GetChatId (string jsonText) {
@@ -119,34 +109,37 @@ namespace Youtube {
 			return obj.items[0].id.videoId;
 		}
 
-		public static IList<CommentInfo> GetComments (string jsonText, string nextPageTokenstr, out string nextToken) {
-			List<CommentInfo> ret = new List<CommentInfo> ();
-			nextToken = string.Empty;
-			var obj = JsonUtility.FromJson<CommentResponse> (jsonText);
-			if (obj == null) {
-				return ret;
-			}
-			nextToken = obj.nextPageToken;
-			var pi = obj.pageInfo;
-			if (null == pi) {
-				return ret;
-			}
-			var items = obj.items;
-			if (null == items) {
-				return ret;
-			}
-			foreach (var item in items) {
-				var name = item.authorDetails.displayName;
-				var isOwner = item.authorDetails.isChatOwner;
-				var msg = item.snippet.displayMessage;
-				if (!string.IsNullOrEmpty (name) && !string.IsNullOrEmpty (msg)) {
-					var ci = new CommentInfo (isOwner, name, msg);
-					//重複をなんとなく避けるための手がかりを付与
-					ci.commentIdHash = item.id.GetHashCode ();
-					ret.Add (ci);
+		public static IList<CommentChunk>
+			GetComments (string jsonText, string nextPageTokenstr, out string nextToken) {
+				List<CommentChunk>
+					ret = new List<CommentChunk>
+					();
+				nextToken = string.Empty;
+				var obj = JsonUtility.FromJson<CommentResponse> (jsonText);
+				if (obj == null) {
+					return ret;
 				}
+				nextToken = obj.nextPageToken;
+				var pi = obj.pageInfo;
+				if (null == pi) {
+					return ret;
+				}
+				var items = obj.items;
+				if (null == items) {
+					return ret;
+				}
+				foreach (var item in items) {
+					var name = item.authorDetails.displayName;
+					var isOwner = item.authorDetails.isChatOwner;
+					var msg = item.snippet.displayMessage;
+					if (!string.IsNullOrEmpty (name) && !string.IsNullOrEmpty (msg)) {
+						var ci = new CommentChunk (isOwner, name, msg);
+						//重複をなんとなく避けるための手がかりを付与
+						ci.commentIdHash = item.id.GetHashCode ();
+						ret.Add (ci);
+					}
+				}
+				return ret;
 			}
-			return ret;
-		}
 	}
 }
