@@ -24,11 +24,18 @@ public class YoutubeCommentCrawler : MonoBehaviour {
     float commentFetchInterval = 5.0f;
     bool doFetchComment = true;
     Youtube.URIGenerator uriGenerator = null;
-    CommentDrawer drawer = null;
+    //CommentDrawer drawer = null;
+    CommentQueue queue = null;
     //コメントと投稿時間だけ出るやつ
     //private string chatURIbottom = "&part=snippet&hl=ja&maxResults=2000&fields=items/snippet/displayMessage,items/snippet/publishedAt,items/authorDetails/displayName&key="; //&part=snippet&hl=ja&maxResults=2000&fields=items/snippet/displayMessage,items/snippet/publishedAt&key=
     void Start () {
-        drawer = GetComponent<CommentDrawer> ();
+
+        var drawer = GetComponent<CommentDrawer> ();
+        queue = GetComponent<CommentQueue> ();
+        if (null != drawer && null != queue) {
+
+            queue.SetDrawer (drawer);
+        }
         StartCoroutine (ProcessSearchVideoId ());
     }
     ///指定チャンネルのVIDEOIDをしぼりこむプロセス
@@ -82,8 +89,8 @@ public class YoutubeCommentCrawler : MonoBehaviour {
             var jsonText = connectChatrequest.downloadHandler.text;
             var token = nextPageTokenstr;
             var comments = JSON.GetComments (jsonText, token, out nextPageTokenstr);
-            if (null != comments && null != drawer) {
-                drawer.DrawComments (comments, doDisplayOwnerMessage);
+            if (null != comments && null != queue) {
+                queue.AddCommentRange (comments);
             }
         }
     }
