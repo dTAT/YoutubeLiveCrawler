@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4710526484925422}
   - component: {fileID: 114071820806333402}
   - component: {fileID: 114986688708862066}
+  - component: {fileID: 114347629332490472}
   m_Layer: 0
   m_Name: YoutubeCrawlerLog
   m_TagString: Untagged
@@ -54,8 +55,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   apiKey: 
   focusCannelId: 
-  doDisplayOwnerMessage: 0
+  isDisplayOwnerMesssageMode: 0
   commentFetchInterval: 3
+--- !u!114 &114347629332490472
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1359530390453136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75995978eb39a48be9544df44d8dcdbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dequeueDelay: 0.5
 --- !u!114 &114986688708862066
 MonoBehaviour:
   m_ObjectHideFlags: 1
