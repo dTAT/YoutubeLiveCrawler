@@ -54,7 +54,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4592213732548404}
   - component: {fileID: 114446464356380904}
-  - component: {fileID: 114553549075650968}
+  - component: {fileID: 114254366196979206}
+  - component: {fileID: 114872903164822902}
   m_Layer: 0
   m_Name: YoutubeCrawlerCanvas
   m_TagString: Untagged
@@ -106,10 +107,10 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 2000
   field of view: 60
   orthographic: 0
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -161,7 +162,19 @@ MonoBehaviour:
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
-  m_DynamicPixelsPerUnit: 1
+  m_DynamicPixelsPerUnit: 5
+--- !u!114 &114254366196979206
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1426892076790086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75995978eb39a48be9544df44d8dcdbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dequeueDelay: 2
 --- !u!114 &114446464356380904
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -175,9 +188,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   apiKey: 
   focusCannelId: 
-  doDisplayOwnerMessage: 0
+  isDisplayOwnerMesssageMode: 0
   commentFetchInterval: 3
---- !u!114 &114553549075650968
+--- !u!114 &114872903164822902
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -191,6 +204,9 @@ MonoBehaviour:
   canvas: {fileID: 223223442904153058}
   messagePrefab: {fileID: 114337761275493162, guid: dcbf77e5461bc4c7bbe61dc5c491e97d,
     type: 2}
+  RandomXRange: 500
+  RandomYRange: 300
+  ZPos: 900
 --- !u!223 &223223442904153058
 Canvas:
   m_ObjectHideFlags: 1

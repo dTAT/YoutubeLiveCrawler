@@ -18,17 +18,26 @@ public class YoutubeCommentCrawler : MonoBehaviour {
     private string focusCannelId = "!PleaseSetYourChannel!";
     ///オーナー自身のメッセージを表示するか
     [SerializeField]
-    private bool doDisplayOwnerMessage = false;
+    private bool isDisplayOwnerMesssageMode = false;
     ///コメント取得間隔(秒)
     [SerializeField]
     float commentFetchInterval = 5.0f;
     bool doFetchComment = true;
     Youtube.URIGenerator uriGenerator = null;
-    CommentDrawer drawer = null;
+    //CommentDrawer drawer = null;
+    CommentQueue queue = null;
     //コメントと投稿時間だけ出るやつ
     //private string chatURIbottom = "&part=snippet&hl=ja&maxResults=2000&fields=items/snippet/displayMessage,items/snippet/publishedAt,items/authorDetails/displayName&key="; //&part=snippet&hl=ja&maxResults=2000&fields=items/snippet/displayMessage,items/snippet/publishedAt&key=
     void Start () {
-        drawer = GetComponent<CommentDrawer> ();
+
+        var drawer = GetComponent<CommentDrawer> ();
+        if (null != drawer) {
+            drawer.IsDisplayOwnerMode = isDisplayOwnerMesssageMode;
+        }
+        queue = GetComponent<CommentQueue> ();
+        if (null != drawer && null != queue) {
+            queue.SetDrawer (drawer);
+        }
         StartCoroutine (ProcessSearchVideoId ());
     }
     ///指定チャンネルのVIDEOIDをしぼりこむプロセス
@@ -76,14 +85,14 @@ public class YoutubeCommentCrawler : MonoBehaviour {
         while (doFetchComment) {
             yield return new WaitForSeconds (commentFetchInterval);
             var chatURI = uriGenerator.GetLiveChat (chatId, nextPageTokenstr);
-            Debug.Log (chatURI);
+            //  Debug.Log (chatURI);
             UnityWebRequest connectChatrequest = UnityWebRequest.Get (chatURI);
             yield return connectChatrequest.SendWebRequest ();
             var jsonText = connectChatrequest.downloadHandler.text;
             var token = nextPageTokenstr;
             var comments = JSON.GetComments (jsonText, token, out nextPageTokenstr);
-            if (null != comments && null != drawer) {
-                drawer.DrawComments (comments, doDisplayOwnerMessage);
+            if (null != comments && null != queue) {
+                queue.AddCommentRange (comments);
             }
         }
     }
