@@ -13,8 +13,13 @@ public class CommentDrawerCanvas : CommentDrawer {
 	List<int> messageHashList = new List<int> ();
 	const int messageMax = 20;
 
+	void Awake () {
+		IsDisplayOwnerMode = false;
+	}
+
 	public override void DrawComment (CommentChunk comment) {
-		if (IsDisplayOwnerMode) {
+		//Debug.Log (comment.Message);
+		if (IsDisplayOwnerMode || !comment.IsOwnerMessage) {
 			if (messageList.Count > messageMax) {
 				var i = messageList[0];
 				messageList.Remove (i);
@@ -40,13 +45,18 @@ public class CommentDrawerCanvas : CommentDrawer {
 		}
 	}
 
+	[SerializeField]
+	float RandomXRange = 500.0f;
+	[SerializeField]
+	float RandomYRange = 300.0f;
+	[SerializeField]
+	float ZPos = 900.0f;
 	void AddComment (CommentChunk comment) {
-		var x = Random.Range (-1200.0f, 500.0f);
-		var y = Random.Range (-630.0f, 270.0f);
-		var z = 900.0f;
+		var x = Random.Range (-RandomXRange, RandomXRange);
+		var y = Random.Range (-RandomYRange, RandomYRange);
 		var item = GameObject.Instantiate (messagePrefab);
 		item.transform.SetParent (canvas.transform);
-		item.transform.localPosition = new Vector3 (x, y, z);
+		item.transform.localPosition = new Vector3 (x, y, ZPos);
 		var mi = item.GetComponent<MessageItem> ();
 		mi.Set (comment.DisplayName, comment.Message);
 		messageList.Add (mi);
