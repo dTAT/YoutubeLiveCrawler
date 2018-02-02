@@ -4,6 +4,8 @@ using UnityEngine;
 using WebComment;
 using Youtube;
 public abstract class CommentDrawer : MonoBehaviour {
+	public bool IsDisplayOwnerMode { set; get; }
+	public abstract void DrawComment (CommentChunk comment);
 	public abstract void DrawComments (IList<CommentChunk> comments, bool isDisplayOwnerMode);
 
 	// float _x = UnityEngine.Random.Range (-400f, 400f);

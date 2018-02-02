@@ -12,6 +12,17 @@ public class CommentDrawerCanvas : CommentDrawer {
 	List<MessageItem> messageList = new List<MessageItem> ();
 	List<int> messageHashList = new List<int> ();
 	const int messageMax = 20;
+
+	public override void DrawComment (CommentChunk comment) {
+		if (IsDisplayOwnerMode) {
+			if (messageList.Count > messageMax) {
+				var i = messageList[0];
+				messageList.Remove (i);
+				GameObject.Destroy (i.gameObject);
+			}
+			AddComment (comment);
+		}
+	}
 	public override void DrawComments (IList<CommentChunk> comments, bool isDisplayOwnerMode) {
 		foreach (var c in comments) {
 			if (messageHashList.Contains (c.commentIdHash)) {
