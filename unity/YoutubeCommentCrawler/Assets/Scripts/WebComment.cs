@@ -8,6 +8,9 @@
 			DisplayName = name;
 			Message = message;
 		}
+		///付与情報
 		public int commentIdHash;
+		public int autherHash;
+		public string autherString;
 	}
 }

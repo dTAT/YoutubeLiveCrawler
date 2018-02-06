@@ -85,7 +85,7 @@ public class YoutubeCommentCrawler : MonoBehaviour {
         while (doFetchComment) {
             yield return new WaitForSeconds (commentFetchInterval);
             var chatURI = uriGenerator.GetLiveChat (chatId, nextPageTokenstr);
-            //  Debug.Log (chatURI);
+            Debug.Log (chatURI);
             UnityWebRequest connectChatrequest = UnityWebRequest.Get (chatURI);
             yield return connectChatrequest.SendWebRequest ();
             var jsonText = connectChatrequest.downloadHandler.text;

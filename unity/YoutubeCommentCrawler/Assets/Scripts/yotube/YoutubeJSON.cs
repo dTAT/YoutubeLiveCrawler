@@ -72,6 +72,8 @@ namespace Youtube {
 	public class CommentsResponseSnippet {
 		public string publishedAt = string.Empty;
 		public string displayMessage = string.Empty;
+
+		public string authorChannelId = string.Empty;
 	}
 
 	[System.Serializable]
@@ -134,8 +136,10 @@ namespace Youtube {
 					var msg = item.snippet.displayMessage;
 					if (!string.IsNullOrEmpty (name) && !string.IsNullOrEmpty (msg)) {
 						var ci = new CommentChunk (isOwner, name, msg);
-						//重複をなんとなく避けるための手がかりを付与
+						//重複をなんなく避けるための手がかりを付与
 						ci.commentIdHash = item.id.GetHashCode ();
+						ci.autherString = item.snippet.authorChannelId;
+						ci.autherHash = item.snippet.authorChannelId.GetHashCode ();
 						ret.Add (ci);
 					}
 				}
